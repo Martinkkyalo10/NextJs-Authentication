@@ -52,7 +52,8 @@ function AuthForm() {
         password: enteredPassword,
       });
 
-      if(result.error)
+      if (result.error) {
+      }
     } else {
       // create user
       try {
