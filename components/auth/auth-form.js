@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { signIn } from "next-auth/react";
 import classes from "./auth-form.module.css";
 
 // util for creating user
@@ -43,7 +44,15 @@ function AuthForm() {
 
     // check if user is in log in mode
     if (isLogin) {
-      // log user in
+      // log user in using signIn function and pass the providers used
+      //and an object configured on how the sigin process should work
+      const result = await signIn("credentials", {
+        redirect: false,
+        email: enteredEmail,
+        password: enteredPassword,
+      });
+
+      if(result.error)
     } else {
       // create user
       try {
