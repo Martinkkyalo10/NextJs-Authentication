@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { signIn } from "next-auth/react";
 import classes from "./auth-form.module.css";
+import { useRouter } from "next/router";
 
 // util for creating user
 
@@ -24,6 +25,9 @@ async function createUser(email, password) {
 function AuthForm() {
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
+
+  // use next router hook to mentain the state
+  const router = useRouter();
 
   const [isLogin, setIsLogin] = useState(true);
 
@@ -53,6 +57,8 @@ function AuthForm() {
       });
 
       if (result.error) {
+        // set auth states using router and replace with replaces the url
+        router.replace("/profile");
       }
     } else {
       // create user
