@@ -1,5 +1,6 @@
-import UserProfile from "../components/profile/user-profile";
 import { getSession } from "next-auth/react";
+
+import UserProfile from "../components/profile/user-profile";
 
 function ProfilePage() {
   return <UserProfile />;
@@ -7,6 +8,7 @@ function ProfilePage() {
 
 export async function getServerSideProps(context) {
   const session = await getSession({ req: context.req });
+
   if (!session) {
     return {
       redirect: {
@@ -16,9 +18,9 @@ export async function getServerSideProps(context) {
     };
   }
 
-  // past the if check means user is logged in so set props
   return {
     props: { session },
   };
 }
+
 export default ProfilePage;

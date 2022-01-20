@@ -1,9 +1,8 @@
 import { useState, useRef } from "react";
 import { signIn } from "next-auth/react";
-import classes from "./auth-form.module.css";
 import { useRouter } from "next/router";
 
-// util for creating user
+import classes from "./auth-form.module.css";
 
 async function createUser(email, password) {
   const response = await fetch("/api/auth/signup", {
@@ -19,6 +18,7 @@ async function createUser(email, password) {
   if (!response.ok) {
     throw new Error(data.message || "Something went wrong!");
   }
+
   return data;
 }
 
@@ -26,46 +26,35 @@ function AuthForm() {
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
 
-  // use next router hook to mentain the state
-  const router = useRouter();
-
   const [isLogin, setIsLogin] = useState(true);
+  const router = useRouter();
 
   function switchAuthModeHandler() {
     setIsLogin((prevState) => !prevState);
   }
 
-  // submit signup data
+  async function submitHandler(event) {
+    event.preventDefault();
 
-  async function submitHandler(e) {
-    e.preventDefault();
-
-    // extract data
     const enteredEmail = emailInputRef.current.value;
     const enteredPassword = passwordInputRef.current.value;
 
     // optional: Add validation
 
-    // check if user is in log in mode
     if (isLogin) {
-      // log user in using signIn function and pass the providers used
-      //and an object configured on how the sigin process should work
       const result = await signIn("credentials", {
         redirect: false,
         email: enteredEmail,
         password: enteredPassword,
       });
 
-      if (result.error) {
-        // set auth states using router and replace with replaces the url
+      if (!result.error) {
+        // set some auth state
         router.replace("/profile");
       }
     } else {
-      // create user
       try {
         const result = await createUser(enteredEmail, enteredPassword);
-
-        // on success
         console.log(result);
       } catch (error) {
         console.log(error);
