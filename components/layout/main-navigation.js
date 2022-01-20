@@ -4,7 +4,7 @@ import Link from "next/link";
 import classes from "./main-navigation.module.css";
 
 function MainNavigation() {
-  const [session, loading] = useSession();
+  const { data: session, loading } = useSession();
 
   function logoutHandler() {
     signOut();
@@ -19,12 +19,12 @@ function MainNavigation() {
       <nav>
         <ul>
           {/* show login link when there is not active session or loading */}
-          {!session &&
-            !loading(
+          {!session ||
+            (!loading && (
               <li>
                 <Link href="/auth">Login</Link>
               </li>
-            )}
+            ))}
 
           {/* profile only appears when there is an active session */}
           {session && (

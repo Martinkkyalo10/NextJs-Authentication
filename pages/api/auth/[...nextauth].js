@@ -1,5 +1,5 @@
 import NextAuth from "next-auth";
-import Providers from "next-auth/providers";
+import CredentialsProvider from "next-auth/providers/credentials";
 import { verifyPassword } from "../../../helpers/auth";
 import { connectToDatabase } from "../../../helpers/db";
 
@@ -13,7 +13,7 @@ export default NextAuth({
   // setup auth providers
   Providers: [
     // config providers to bring your own credentials, select credentials provider
-    Providers.Credentials({
+    CredentialsProvider({
       async authorize(credentials) {
         //   connect to database
         const client = await connectToDatabase();
